@@ -1,0 +1,9 @@
+"C:\Program Files\JetBrains\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64/ninja.exe" -G Ninja -S C:\Users\Αχιλλέας\CLionProjects\Projects -B C:\Users\Αχιλλέας\CLionProjects\Projects\cmake-build-debug
+-- SDL2_INCLUDE_DIR: C:/libs/SDL2-2.30.1/x86_64-w64-mingw32/include/SDL2
+-- SDL2_IMAGE_INCLUDE_DIRS: C:/libs/SDL2_image-2.8.2/x86_64-w64-mingw32/include/SDL2
+-- SDL2TTF_INCLUDE_DIR: C:/libs/SDL2_ttf-2.22.0/x86_64-w64-mingw32/include/SDL2
+-- SDL2TTF_LIBRARY: C:/libs/SDL2_ttf-2.22.0/x86_64-w64-mingw32/lib/libSDL2_ttf.dll.a
+-- SDL2_IMAGE_LIBRARY: C:/libs/SDL2_image-2.8.2/x86_64-w64-mingw32/lib/libSDL2_image.dll.a
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: C:/Users/Αχιλλέας/CLionProjects/Projects/cmake-build-debug

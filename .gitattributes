@@ -1,0 +1,16 @@
+# Set the default behavior for all text files
+* text=auto
+
+# Ensure consistent CRLF line endings for specific file types
+*.cpp text eol=crlf
+*.h text eol=crlf
+
+# For other text files, also enforce CRLF line endings
+*.txt text eol=crlf
+*.md text eol=crlf
+
+# Treat binary files explicitly to prevent line ending conversion
+*.png binary
+*.jpg binary
+*.gif binary
+*.exe binary

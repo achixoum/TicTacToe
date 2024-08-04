@@ -11,3 +11,4 @@
 *.jpg binary
 *.gif binary
 *.exe binary
+cmake-build-debug/SDL2_ttf.dll filter=lfs diff=lfs merge=lfs -text

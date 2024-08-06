@@ -156,6 +156,15 @@ int main(int argc, char* argv[])
                                     flag = true;
                                 }
                                 j++;
+                                if (j==9)
+                                {
+                                    playAgain.SetRectProperties((800-500)/2+150,(800-500)/2+150,200,100);
+                                    quit.SetRectProperties((800-500)/2+150,(800-500)/2+250,200,100);
+                                    text1.SetText("DRAW", 20, 20, 20);
+                                    text1.SetTexture(renderer);
+                                    text1.SetRectProperties((800-500)/2-50,(800-500)/2+50,500,100);
+                                    flag = true;
+                                }
                             }
                         }
                     }

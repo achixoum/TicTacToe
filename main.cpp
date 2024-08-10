@@ -120,15 +120,6 @@ int main(int argc, char* argv[])
             playAgain.Update(x,y);
             quit.Update(x,y);
             SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION,"%d",j);
-            if (j==9 && !flag)
-            {
-                playAgain.SetRectProperties((800-500)/2+150,(800-500)/2+150,200,100);
-                quit.SetRectProperties((800-500)/2+150,(800-500)/2+250,200,100);
-                text1.SetText("DRAW", 20, 20, 20);
-                text1.SetTexture(renderer);
-                text1.SetRectProperties((800-500)/2-50,(800-500)/2+50,500,100);
-                flag = true;
-            }
             if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
             {
                 board.setX(x);
@@ -193,6 +184,15 @@ int main(int argc, char* argv[])
                     GameIsRunning = false;
                     break;
                 }
+            }
+            if (j==9 && !flag)
+            {
+                playAgain.SetRectProperties((800-500)/2+150,(800-500)/2+150,200,100);
+                quit.SetRectProperties((800-500)/2+150,(800-500)/2+250,200,100);
+                text1.SetText("DRAW", 20, 20, 20);
+                text1.SetTexture(renderer);
+                text1.SetRectProperties((800-500)/2-50,(800-500)/2+50,500,100);
+                flag = true;
             }
             if(event.type==SDL_QUIT)
             {

@@ -1,4 +1,3 @@
-# ORIGINAL: https://github.com/tcbrindle/sdl2-cmake-scripts/blob/master/FindSDL2_image.cmake
 # Locate SDL_image library
 #
 # This module defines:

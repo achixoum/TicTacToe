@@ -11,9 +11,9 @@ private:
     bool isSelected;
     bool withinBounds(int x, int y);
 public:
-    Button(SDL_Renderer* renderer, const char* fileName);
+    Button(SDL_Renderer* renderer, const char* fileName, int sourceW, int sourceH);
     ~Button();
-    void Update(int x, int y);
+    void Update(int x, int y,int sourceX);
     void SetRectProperties(int x, int y, uint16_t w, uint16_t h);
     void RenderButton(SDL_Renderer*& renderer);
     bool IsSelected();

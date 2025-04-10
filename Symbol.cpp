@@ -1,4 +1,4 @@
-#include "Symol.h"
+#include "Symbol.h"
 #include "ResourceManager.h"
 
 Symbol::Symbol() {

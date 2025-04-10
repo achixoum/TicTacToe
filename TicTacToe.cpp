@@ -122,13 +122,26 @@ int BOARD::checkColor(SDL_Renderer* renderer)
     return isMouseOverColor(renderer,getPixelColor(renderer, 162, 213));
 }
 
-void BOARD::placeSymbol(SDL_Renderer* renderer, const char* FileName, const string& symbol)
+void BOARD::placeSymbol(SDL_Renderer* renderer, const char* FileName, const string& symbol, int x, int y)
 {
-    int a = checkCordinates();
+    int a;
     shared_ptr<Symbol> rect = make_shared<Symbol>(renderer, FileName);
     symbols1.push_back(rect);
     symbols1.back()->SetRectProperties(map[a].first-124, map[a].second-97, 266, 200);
-    array[a-1] = symbol;
+    if (x == -1 && y == -1) {
+        a = checkCordinates();
+        array[a-1] = symbol;
+        symbols1.back()->SetRectProperties(map[a].first-124, map[a].second-97, 266, 200);
+    }
+    else {
+        a = y*3+x;
+        array[a] = symbol;
+        symbols1.back()->SetRectProperties(map[a+1].first-124, map[a+1].second-97, 266, 200);
+    }
+}
+
+void BOARD::placeSymbol(const string& symbol, int x, int y) {
+    array[y * 3 + x] = symbol;
 }
 
 void BOARD::RenderSymbol(SDL_Renderer*& renderer)
@@ -145,4 +158,149 @@ void BOARD::DestroyBoard()
         array[i] = " ";
     }
     symbols1.clear();
+}
+
+int BOARD::evaluateCounterForSymbol(const string& symbol1 , const string& symbol2) {
+    int diagonal = 0;
+    int rows = 0;
+    int columns = 0;
+    int X1 = 0;
+    int X2 = 0;
+    int X3 = 0;
+
+    //first diagonal
+    for (int i=0; i<3; i++) {
+        if (array[i*3+i] == symbol1)
+            diagonal++;
+        else if (array[i*3+i] == symbol2) {
+            diagonal = 0;
+            break;
+        }
+    }
+    if (diagonal == 1)
+        X1++;
+    else if (diagonal == 2)
+        X2++;
+    else if (diagonal == 3)
+        X3++;
+
+    //secondary diagonal
+    diagonal = 0;
+    for (int i=0; i<3; i++) {
+        if (array[i*2+2] == symbol1)
+            diagonal++;
+        else if (array[i*2+2] == symbol2) {
+            diagonal = 0;
+            break;
+        }
+    }
+    if (diagonal == 1)
+        X1++;
+    else if (diagonal == 2)
+        X2++;
+    else if (diagonal == 3)
+        X3++;
+
+    //rows
+    for (int i=0; i<3; i++) {
+        rows = 0;
+        for (int j=0; j<3; j++) {
+            if (array[i*3+j] == symbol1)
+                rows++;
+            else if (array[i*3+j] == symbol2) {
+                rows = 0;
+                break;
+            }
+        }
+        if (rows == 1)
+            X1++;
+        else if (rows == 2)
+            X2++;
+        else if (rows == 3)
+            X3++;
+    }
+
+    //columns
+    for (int i=0; i<3; i++) {
+        columns = 0;
+        for (int j=0; j<3; j++) {
+            if (array[j*3+i] == symbol1)
+                columns++;
+            else if (array[j*3+i] == symbol2) {
+                columns = 0;
+                break;
+            }
+        }
+        if (columns == 1)
+            X1++;
+        else if (columns == 2)
+            X2++;
+        else if (columns == 3)
+            X3++;
+    }
+    return X1 + 2*X2 + 3*X3;
+}
+
+int BOARD::evaluateBoard() {
+    return evaluateCounterForSymbol("O", "X") - evaluateCounterForSymbol("X", "O");
+}
+
+vector<BOARD*> BOARD::expand(const string& symbol) {
+    vector<BOARD*> children;
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            if (array[i*3+j] == " ") {
+                BOARD* child = new BOARD(*this);
+                child->setX(j);
+                child->setY(i);
+                child->placeSymbol(symbol, child->getX(), child->getY());
+                children.push_back(child);
+            }
+        }
+    }
+
+    return children;
+}
+
+int BOARD::getValue() {
+    return value;
+}
+
+void BOARD::setValue(int value) {
+    this->value = value;
+}
+
+bool BOARD::isFull() {
+    int count = 0;
+    for (int i=0; i<9; i++) {
+        if (array[i] != " ")
+            count++;
+    }
+    return count == 9;
+}
+
+int BOARD::miniMax(int depth, bool isMax, BOARD& start, BOARD* best) {
+    int value = start.evaluateBoard();
+    if (depth == 0 || start.isFull() || start.checkForWinner(isMax?"X":"O")) {
+        best = &start;
+        return value;
+    }
+    int max, temp;
+    BOARD maxState, tempState;
+    vector<BOARD* > children = start.expand(isMax?"O":"X");
+    max = miniMax(depth-1, !isMax, *children.front(), &maxState);
+    maxState = *children.front();
+
+    for (int i=1; i<children.size(); i++) {
+        temp = miniMax(depth-1, !isMax, *children[i], &tempState);
+        if ((temp > max) == isMax) {
+            max = temp;
+            maxState = *children[i];
+        }
+    }
+    for (BOARD* i : children) {
+        delete i;
+    }
+    *best = maxState;
+    return max;
 }

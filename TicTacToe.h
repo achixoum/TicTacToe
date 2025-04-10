@@ -1,4 +1,3 @@
-
 #ifndef TICTACTOE_H
 #define TICTACTOE_H
 
@@ -7,7 +6,8 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
-#include "Symol.h"
+#include "Symbol.h"
+#include <iostream>
 
 using namespace std;
 
@@ -18,6 +18,7 @@ private:
     string array[9];
     vector<shared_ptr<Symbol>> symbols1;
     unordered_map<int ,pair<int,int>> map;
+    int value;
 public:
     BOARD();
     void setX(int x);
@@ -28,12 +29,20 @@ public:
     bool HasSymbol();
     bool checkBoundaries();
     int checkCordinates();
-    void placeSymbol(SDL_Renderer* renderer, const char* FileName, const string& symbol);
+    void placeSymbol(SDL_Renderer* renderer, const char* FileName, const string& symbol, int x, int y);
+    void placeSymbol(const string& symbol, int x, int y);
     void RenderSymbol(SDL_Renderer*& renderer);
     int checkColor(SDL_Renderer* renderer);
     Uint32 getPixelColor(SDL_Renderer* renderer, int X, int Y);
     bool isMouseOverColor(SDL_Renderer* renderer, Uint32 targetColor);
     void DestroyBoard();
+    int evaluateCounterForSymbol(const string& symbol1, const string& symbol2);
+    int evaluateBoard();
+    vector<BOARD*> expand(const string& symbol);
+    int getValue();
+    void setValue(int value);
+    bool isFull();
+    int miniMax(int depth, bool isMax, BOARD& start, BOARD* best);
 };
 
 #endif

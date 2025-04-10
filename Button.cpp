@@ -1,10 +1,10 @@
 #include "Button.h"
 
-Button::Button(SDL_Renderer *renderer, const char *fileName) {
+Button::Button(SDL_Renderer *renderer, const char *fileName, int sourceW, int sourceH) {
     SDL_Surface* symbol = ResourceManager::GetInstance().GetSurface(const_cast<char *>(fileName));
     ButtonTexture = SDL_CreateTextureFromSurface(renderer,symbol);
 
-    SourceRect = {0,0,250,100};
+    SourceRect = {0,0,sourceW,sourceH};
 
     DestRect.w = 200;
     DestRect.h = 100;
@@ -41,12 +41,12 @@ bool Button::withinBounds(int x, int y)
     return true;
 }
 
-void Button::Update(int x, int y)
+void Button::Update(int x, int y,int sourceX)
 {
     if (withinBounds(x,y))
     {
         isSelected = true;
-        SourceRect.x = 257;
+        SourceRect.x = sourceX;
     }
     else
     {

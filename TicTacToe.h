@@ -18,7 +18,7 @@ private:
     string array[9];
     vector<shared_ptr<Symbol>> symbols1;
     unordered_map<int ,pair<int,int>> map;
-    int value;
+    bool player;
 public:
     BOARD();
     void setX(int x);
@@ -40,9 +40,9 @@ public:
     int evaluateBoard();
     vector<BOARD*> expand(const string& symbol);
     int getValue();
-    void setValue(int value);
+    void setValue(bool player);
     bool isFull();
-    int miniMax(int depth, bool isMax, BOARD& start, BOARD* best);
+    int miniMax(int depth, bool isMax,const string& symbol1, const string& symbol2, BOARD& start, BOARD* best);
 };
 
 #endif

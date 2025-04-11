@@ -1,6 +1,8 @@
 #include <iostream>
 #include "TicTacToe.h"
 
+#include <math.h>
+
 BOARD::BOARD()
 {
     for(int i=0;i<9;i++)
@@ -242,6 +244,8 @@ int BOARD::evaluateCounterForSymbol(const string& symbol1 , const string& symbol
 }
 
 int BOARD::evaluateBoard() {
+    if (player)
+        return evaluateCounterForSymbol("X", "O") - evaluateCounterForSymbol("O", "X");
     return evaluateCounterForSymbol("O", "X") - evaluateCounterForSymbol("X", "O");
 }
 
@@ -263,11 +267,11 @@ vector<BOARD*> BOARD::expand(const string& symbol) {
 }
 
 int BOARD::getValue() {
-    return value;
+    return player;
 }
 
-void BOARD::setValue(int value) {
-    this->value = value;
+void BOARD::setValue(bool player) {
+    this->player = player;
 }
 
 bool BOARD::isFull() {
@@ -279,20 +283,20 @@ bool BOARD::isFull() {
     return count == 9;
 }
 
-int BOARD::miniMax(int depth, bool isMax, BOARD& start, BOARD* best) {
+int BOARD::miniMax(int depth, bool isMax,const string& symbol1, const string& symbol2, BOARD& start, BOARD* best) {
     int value = start.evaluateBoard();
-    if (depth == 0 || start.isFull() || start.checkForWinner(isMax?"X":"O")) {
+    if (depth == 0 || start.isFull() || start.checkForWinner(isMax?symbol2:symbol1)) {
         best = &start;
         return value;
     }
     int max, temp;
     BOARD maxState, tempState;
-    vector<BOARD* > children = start.expand(isMax?"O":"X");
-    max = miniMax(depth-1, !isMax, *children.front(), &maxState);
+    vector<BOARD* > children = start.expand(symbol1);
+    max = miniMax(depth-1, !isMax,symbol2, symbol1, *children.front(), &maxState);
     maxState = *children.front();
 
     for (int i=1; i<children.size(); i++) {
-        temp = miniMax(depth-1, !isMax, *children[i], &tempState);
+        temp = miniMax(depth-1, !isMax,symbol2, symbol1, *children[i], &tempState);
         if ((temp > max) == isMax) {
             max = temp;
             maxState = *children[i];

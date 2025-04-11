@@ -153,12 +153,13 @@ int main(int argc, char* argv[])
     string player1,player2;
     //player2 = symbol;
     int j;
+    BOARD board2;
+    BOARD best;
     player1 = symbol == "X"?"O" : "X";
     player2 = symbol == "X"?"X" : "O";
     j = symbol == "X"?1 : 0;
-    BOARD board2;
+    board2.setValue(player1=="X");
     bool flag2 = false;
-    BOARD best;
     int g;
     while (GameIsRunning2)
     {
@@ -171,7 +172,7 @@ int main(int argc, char* argv[])
                 board2.placeSymbol(renderer, ("./images/" + player1 + ".png").c_str(), player1,0, 0);
             }
             else {
-                board2.miniMax(10, true, board2, &best);
+                board2.miniMax(10, true,player1,player2, board2, &best);
                 board2.placeSymbol(renderer, ("./images/" + player1 + ".png").c_str(), player1, best.getX(), best.getY());
             }
             text1.SetText(("NOW PLAYING: "+player2).c_str(), 20, 20, 20);
